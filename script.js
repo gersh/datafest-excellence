@@ -28,7 +28,19 @@ function draw() {
 		.attr("class",function(d) { 
 			//stateInfo[d.properties.name]=d;
 			return(d.properties.name);
+		}).on("mouseover",function(d) { 
+			//alert("Testing");
+			$("#top_states").html("");
+			//alert(d.properties.name);
+			d3.json("q2_sql.json",function(c) {
+				for(var i in c) {
+					if(c[i].recipient_state==d.properties.name)
+					$("#top_states").html(JSON.stringify(c[i]));
+				}
+			});
 		});
+			//d3.select(this).attr("fill",function() { return("red"); }) 
+			//});
 		/*links=[];
 	
 		for(var i in stateInfo) {
@@ -49,17 +61,9 @@ function draw() {
 		.enter().append("path")
 		.attr("d",function(d) { 
 			return path(arc(d));});*/
-		/*.on("mouseover",function(d) { 
-			$("#top_states").html("");
-			d3.json("q2_sql_new.json",function(c) {
-				for(var i in c) {
-					c[i].contributor_state
-				}
-			});*/
-			//d3.select(this).attr("fill",function() { return("red"); }) 
-			//});
+		/*
 		//.attr("fill",function() { return("red"); });
-	//	.classed(collection.state);
+	//	.classed(collection.state);*/
 
 	
 	});
