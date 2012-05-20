@@ -1,0 +1,76 @@
+<html>
+<head>
+<script type="text/javascript" src="d3.v2.js"></script>
+<script type="text/javascript" src="jquery.min.js"></script>
+<script type="text/javascript" src="jquery-ui-1.8.20.custom.min.js"></script>
+<link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css"/>
+<link rel=stylesheet href="style.css" type="text/css"></link>
+</head>
+<body >
+<div id="slider"></div>
+<span id="year">2012</span>
+<h3>Year</h3>
+<div id="map">
+<script type="text/javascript">
+var w=1280,
+	h=800;
+var path = d3.geo.path()
+var projection = d3.geo.azimuthal()
+.mode("equidistant")
+.origin([-98, 38])
+.scale(1400)
+.translate([640, 360]); 
+var svg = d3.select("#map").insert("svg:svg", "h2")
+.attr("width", w)
+.attr("height", h); 
+var states = svg.append("svg:g")
+	.attr("id","states");
+d3.json("us-states.json",function(collection) {
+	states.selectAll("path")
+	.data(collection.features)
+	.enter().append("svg:path")
+	.attr("d",path)
+	.attr("class",function(d) { return(d.properties.name)});
+//	.on("mouseover",function(d) { d3.select(this).attr("fill",function() { return("red"); }) });
+	//.attr("fill",function() { return("red"); });
+//	.classed(collection.state);
+	
+});
+d3.json("./state_pct.json",function(c){
+	for(var i in c) {
+		var c1="#FFFFCC";
+		var c2="#C2E699";
+		var c3="#78C679";
+		var c4="#31A354";
+		var c5="#006837";
+		var color;
+		if(c[i].pct < 0.2) {
+			color=c1;	
+		}
+		else if(c[i].pct < .4) {
+			color=c2;	
+		}
+		else if(c[i].pct < .6) {
+			color=c3;	
+		}
+		else if(c[i].pct < .8) {
+			color=c4;	
+		}
+		else {
+			color=c5;	
+		}
+		$("." + c[i].state).attr("fill",color);	
+	}
+});
+$(document).ready(function(){
+	$(".Texas").click(function(){
+		alert("TEXAS");	
+	});
+	$("#slider").slider({max:2012,min:1990,step:1,value:2012,slide:function(even,ui) {
+			$("#year").html(ui.value);
+		}});
+});
+</script>
+</div>
+</body>
+</html>
