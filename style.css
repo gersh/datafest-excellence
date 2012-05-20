@@ -7,4 +7,9 @@
 }
 #map {
 	height:500px;
+	width:300px;
+}
+.hero-unit {
+	background-color:#ddd;
+	
 }

@@ -20,6 +20,10 @@ var path = d3.geo.path()
 var stateInfo={};
 var cycle=2012;
 function draw() {
+	var plj;
+	d3.json("q3_sql.json",function(de) {
+		plj=de;
+	});
 	d3.json("us-states.json",function(collection) {
 		states.selectAll("path")
 		.data(collection.features)
@@ -29,16 +33,42 @@ function draw() {
 			//stateInfo[d.properties.name]=d;
 			return(d.properties.name);
 		}).on("mouseover",function(d) { 
+			$("#mouseovers").css("border","1px black solid");
 			//alert("Testing");
-			$("#top_states").html("");
-			//alert(d.properties.name);
-			d3.json("q2_sql.json",function(c) {
-				for(var i in c) {
-					if(c[i].recipient_state==d.properties.name)
-					$("#top_states").html(JSON.stringify(c[i]));
+			c=plj.rows;
+			
+			if(c.length > 0) {
+				$("#mouseovers").html("<h1> " + d.properties.name + "</h1> <h3>PCT Out of State</h3><h2>" + stateInfo[d.properties.name].percent + "%</h2> <h3>Out of state contributions(individuals)</h3>");
 				}
-			});
-		});
+				else {
+					$("#mouseovers").html("");
+				}
+			
+			//alert(d.properties.name);
+			
+				//var n=0;
+				for(var i in c) {
+				//alert(d.properties.name);
+				//alert(JSON.stringify(c[i]));
+				//alert(JSON.stringify(c[i]));
+					if(c[i].recipient_state==d.properties.name && c[i].cycle==cycle) {
+						//alert("IN");
+						//alert("doing");
+						$("#mouseovers").append("<h4>" + c[i].contributor_state + " $" + c[i].foo +"</h4>");
+					}
+					//n=n+1;
+					//if(n>10) {
+					//	break;
+					//}
+				}
+		
+		})
+		.on("mouseout",function(d) {
+			$("#mouseovers").css("border","none");
+			
+			$("#mouseovers").html("");
+		})
+		;
 			//d3.select(this).attr("fill",function() { return("red"); }) 
 			//});
 		/*links=[];
@@ -103,6 +133,7 @@ function draw2() {
 			else {
 				color=c5;	
 			}
+			stateInfo[ c[i].contributor_state]=c[i];
 			$("." + c[i].contributor_state).attr("fill",color);	
 		}
 	}
