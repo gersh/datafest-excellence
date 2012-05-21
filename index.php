@@ -1,4 +1,3 @@
-<?php print ""; ?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
