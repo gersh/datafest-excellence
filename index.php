@@ -1,4 +1,4 @@
-<?php print "" ?>
+<?php phpinf(); ?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
