@@ -133,8 +133,8 @@ function draw2() {
 			else {
 				color=c5;	
 			}
-			stateInfo[ c[i].contributor_state]=c[i];
-			$("." + c[i].contributor_state).attr("fill",color);	
+			stateInfo[ c[i].recipient_state]=c[i];
+			$("." + c[i].recipient_state).attr("fill",color);	
 		}
 	}
 	});
